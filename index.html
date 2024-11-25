@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<!--Utilizar caracteres especiales en español-->
+		<meta charset="utf-8">
+	
+		<!--Geoportal se da un Reponsive Web Desing -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+		<!--Título de la Pestaña en Navegador-->
+		<title>GIS Analyst</title>
+
+		<!--Se agrega el ícono de la pestaña "favicon" -->
+		<link rel="icon" href="images/favicon.png">
+
+		<!--Enlazar a librería Leaflet (CSS y JS) al Html
+			DESCARGANDO la librería, en este caso con la carpeta "plugis"-->
+		<link rel="stylesheet" href="plugins/leaflet.css">
+		<script type="text/javascript" src="plugins/leaflet.js"></script>
+
+		<!--Enlazar librería para CLUSTERS -->
+		<script type="text/javascript" src="plugins/leaflet.markercluster.js"></script>
+		<link rel="stylesheet" href="plugins/MarkerCluster.css">
+		<link rel="stylesheet" href="plugins/MarkerCluster.Default.css">
+
+		<!--Enlazar librería para LOCATE -->
+		<script type="text/javascript" src="plugins/L.Control.Locate.min.js"></script>
+		<link rel="stylesheet" href="plugins/L.Control.Locate.min.css">
+
+		<!--Enlazar librería para MINIMAP -->
+		<script type="text/javascript" src="plugins/Control.MiniMap.min.js"></script>
+		<link rel="stylesheet" href="plugins/Control.MiniMap.min.css">
+
+		<!--Enlazar librería para Barra de Coordenadas -->
+		<script type="text/javascript" src="plugins/Leaflet.Coordinates-0.1.5.min.js"></script>
+		<link rel="stylesheet" href="plugins/Leaflet.Coordinates-0.1.5.css">
+
+		<!--Enlazar librería para Buscador de Direcciones - GEOCODER-->
+		<script type="text/javascript" src="plugins/Control.Geocoder.js"></script>
+		<link rel="stylesheet" href="plugins/Control.Geocoder.css">
+
+		<!--Enlazar librería para MEASURE Medidor de Distancias y Área-->
+		<script type="text/javascript" src="plugins/leaflet.measure.js"></script>
+		<link rel="stylesheet" href="plugins/leaflet.measure.css">
+
+		<!--Enlazar librería para SEARCH CONTROL-->
+		<script type="text/javascript" src="plugins/leaflet-search.min.js"></script>
+		<link rel="stylesheet" href="plugins/leaflet-search.min.css">
+
+		<!--Enlazar librería para HEATMAP, que solo ocupa el ".js"-->
+		<script type="text/javascript" src="plugins/leaflet-heat.js"></script>
+
+		<!--Enlazar librería para SIDE BAR-->
+		<script type="text/javascript" src="plugins/leaflet-sidebar.min.js"></script>
+		<link rel="stylesheet" href="plugins/leaflet-sidebar.min.css">
+
+		<!-- Referenciando Biblioteca para ÍCONOS / la única que se refencía desde la web-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+		<!--Enlazar librería para diseño BOOTSTRAP-->
+		<script type="text/javascript" src="plugins/bootstrap.bundle.min.js"></script>
+		<link rel="stylesheet" href="plugins/bootstrap.min.css">
+
+		<!--Enlazar librería AJAX para cargar un servicio WFS-->
+		<script type="text/javascript" src="plugins/leaflet.ajax.min.js"></script>
+
+		<!--Enlazar librería para Leyenda / Simbología-->
+		<script type="text/javascript" src="plugins/leaflet.legend.js"></script>
+		<link rel="stylesheet" href="plugins/leaflet.legend.css">
+
+		<!--Enlazar librería para RUTA-->
+		<script type="text/javascript" src="plugins/ruta.js"></script>
+		<link rel="stylesheet" href="plugins/ruta.css">
+		<script type="text/javascript" src="plugins/leaflet-routing-machine.js"></script>
+		<link rel="stylesheet" href="plugins/leaflet-routing-machine.css">
+
+		<!--Enlazar librería para GENERAR CHART-->
+		<script src="plugins/plotly-latest.min.js"></script>
+
+		<!--Se configura el archivo style de js para mejorar la apariencia del header - Se mandó al último por config del tooltip (que vaya después del leaflet) -->
+		<link rel="stylesheet" href="css/styles.css">
+
+		
+	</head>
+
+
+	<body>
+
+		<!--Se configura un encabezado con imagen y título -->
+		<header>
+			<!--se agrega el id para nombrar solo esta como "logo" y referirnos solo a ella en el css-->
+			<!-- <img src="images/logo.png" id="logo"> -->
+			
+			<!--El título se denominó "h1" para después en el css modificar su visualización-->
+			<h1>Atlas de Riesgo municipio de Matamoros, Tamaulipas</h1>
+
+			<!-- <img src="images/pc.jpg" 	id="pc"> -->
+					
+		</header>
+
+		<!--div: representa la división o espacio donde se alojará el mapa, se nombre "map"
+		La configuración se realiza en el archivo estilo.css [en la carpeta css]-->
+		<div id="map">
+
+		<!------------------------ Inicio del SIDEBAR -------------------------------->
+
+		<!-- Se crea la división enn pantalla para el sidebar -->
+		<div id="sidebar" class="leaflet-sidebar collapsed">
+
+			<!--División corresppondiente a pestañas (tabs) -->
+			<div class="leaflet-sidebar-tabs">
+				<ul role="tablist">
+					<!--Pestañas del Sidebar TABS-->
+					<li><a href="#home" 	role="tab"><i class="fa-solid fa-house-chimney-user"></i></a></li> <!--Se crea pestaña, comprueba con cursor del mouse-->
+					<li><a href="#heatmap"	role="tab"><i class="fa-brands fa-first-order-alt"></i></a></li> <!--Cada línea es una pestaña-->
+					<li><a href="#route"	role="tab"><i class="fa-solid fa-route"></i></a></li> <!--Botón de Ruta-->
+					<li><a href="#chart"	role="tab"><i class="fa-solid fa-square-poll-vertical"></i></a></li> <!--Botón de Estadística-->
+					<li><a href="#shp"		role="tab"><i class="fa-solid fa-file-arrow-up"></i></a></li> <!--Botón subir Shp-->
+				</ul>
+				
+			</div>
+
+			<div class="leaflet-sidebar-content">
+
+				<!---------& & & & & & & -- H O M E -- & & & & & & & & &------------>
+
+				<!--Contenido del Home en la SIDEBAR-->
+				<div class="leaflet-sidebar-pane" id="home">
+					<h1 class="leaflet-sidebar-header" style="text-align: center;">Inicio</h1><br>
+					<p><strong>Bienvenidos, este Geoportal ha sido diseñado para proporcionar información espacial y herramientas interactivas para el análisis y la visualización de datos geográficos.</strong></p>
+					<p><strong>En este Geoportal, encontrarás datos relevantes para el análisis de áreas específicas y podrás explorar diversas capas geográficas para una mejor toma de decisiones.</strong></p>
+					
+					<!-- <img src="plugins/images/APLA.png" alt="Opciones APLA" style="width:100%; height:auto; margin-top:10px;"> -->
+				</div>
+
+				<!---------& & & & & & & -- H E A T M A P -- & & & & & & & & &------------>
+
+					<!--Contenido del HEATMAP en el SIDEBAR-->
+				<div class="leaflet-sidebar-pane" id="heatmap">
+					<h1 class="leaflet-sidebar-header" style="text-align: center;">Mapa de calor</h1><br>
+					<p><strong>Mapa de calor de los Centros Educativos</strong></p>
+
+					<!--Creación de botones-->
+					<div class="d-grid gap-2">
+					<button id="activarHeatmap" class="btn btn-primary">Activar Mapa de Calor</button>
+					<button id="desactvarHeatmap" class="btn btn-danger">Descativar Mapa de Calor</button>
+					</div>	
+					
+				</div>
+
+				<!---------& & & & & & & -- R U T A -- & & & & & & & & &------------>
+				
+				<div class="leaflet-sidebar-pane" id="route">
+					<h1 class="leaflet-sidebar-header" style="text-align: center;">Genera una Ruta</h1><br>
+					<p><strong>Para generar ruta, apaga capas y solo visualiza mapa de calles</strong></p>
+
+					<!--Creación de botones-->
+					<button id="create-markers-button"	class="btn btn-primary btn-sm">Crear Marcadores</button>
+			        <button id="trace-route-button"  	class="btn btn-primary btn-sm" disabled>Crear Ruta</button>
+			        <button id="clear-route-button" 	class="btn btn-primary btn-sm"	disabled>Borrar Ruta</button>
+					
+				</div>
+
+				<!---------& & & & & & & -- CHART - STATISTICS -- & & & & & & & & &------------>
+				
+				<div class="leaflet-sidebar-pane" id="chart">
+					<h1 class="leaflet-sidebar-header" style="text-align: center;">Gráfico de Población</h1><br>
+					<p><strong>Para generar gráfico, activa y da click sobre la capa AGEBS</strong></p>
+					
+					<!-- Contenedor para el gráfico -->
+	                <div id="chart-container" style="width: 100%; height: 400px;"></div>
+					<button id="remove-chart-button">Eliminar Gráfico</button>
+
+				</div>
+
+				<!---------& & & & & & & -- CARGAR SHP -- & & & & & & & & &------------>
+
+				<div class="leaflet-sidebar-pane" id="shp">
+					<h1 class="leaflet-sidebar-header" style="text-align: center;">Carga un Shapefile</h1><br>
+					<p style="text-align: center;"><strong>Para cargar un shp, comprime los archivos en un ".zip"</strong></p>
+
+					<!--Creación de botones-->
+					<div id="controls">
+			        <input type="file" id="shapefile-input" accept=".zip" class="btn btn-primary"><br><br>
+			        <button id="show-button"	class="btn btn-primary btn-sm">Mostrar Shapefile</button>
+			        <button id="clear-button"	class="btn btn-secondary btn-sm">Borrar Shapefile</button>
+			    	</div>
+					
+				</div>
+
+				<!---------& & & & & & & & & & & & & & & &------------>
+		
+			</div>
+
+		</div>
+
+		<!------------------------ Fin del SIDEBAR  ---------------------------------->
+
+			<!--Se agrega el GeoJSON ---&&&  * C A P A S * &&&--- primero en este apartado y luego en el maps.js -->
+
+			<script type="text/javascript" src="layers/geojson/gaseras.js"></script>
+			<script type="text/javascript" src="layers/geojson/ce.js"></script> 
+			<script type="text/javascript" src="layers/geojson/es.js"></script>
+			<script type="text/javascript" src="layers/geojson/hidrologia.js"></script>
+			<script type="text/javascript" src="layers/geojson/pob_x_manzana.js"></script>
+			<script type="text/javascript" src="layers/geojson/agebs_mat.js"></script>
+			<script type="text/javascript" src="layers/geojson/buff_gaseras.js"></script>
+			<script type="text/javascript" src="layers/geojson/mpios_tamaulipas.js"></script>
+
+			<!--Edición de ícono, después de que lee la capa -->
+			<script type="text/javascript" src="js/icons.js"></script>
+
+			<!--Se indexa el archio symbologies.js para el personalizado de líneas -->
+			<script type="text/javascript" src="js/symbologies.js"></script>
+
+			<!--Se indexa el archio popups.js para los POPUPS -->
+			<script type="text/javascript" src="js/popups.js"></script>
+
+			<!--Se indexa el archio popups.js para los TOOLTIP -->
+			<script type="text/javascript" src="js/tooltip.js"></script>
+
+		</div>
+
+		<!---------------------- Para la opción de Cargar SHP estas librerías va al final del Body  ----------------------------->
+
+		<!--Enlazar librería para CARGAR SHP-->
+		<script type="text/javascript" src="plugins/jszip.min.js"></script>
+		<script type="text/javascript" src="plugins/shp.min.js"></script>
+		<script type="text/javascript" src="plugins/load_shapefile.js"></script>
+
+		<!------------------------------------------------------------------------------------------------------------------------>
+
+		<!-- Vincula los archivos JavaScript necesarios para CHART -->
+	    <script src="js/charts.js"></script>
+
+	    <!--Se enlaza el objeto map generado en maps.js -->
+		<script type="text/javascript" src="js/maps.js"></script>
+
+	</body>
+
+</html>
